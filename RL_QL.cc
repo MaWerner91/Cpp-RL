@@ -147,11 +147,10 @@ int Policy::get_action(StateVector *statevec, ActionValueFunction *avf)
         {
             max_actions[max_actions_length++] = i;
             max_value = actionvalues[i];
-        }
-        else if(possible_action[i] == true)
-        {
             remaining_actions[remaining_actions_length++] = i;
         }
+        else if(possible_action[i] == true)
+            remaining_actions[remaining_actions_length++] = i;
     }
         
     // choose if greedy or not
