@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     int max_epoches;
     int max_moves = 9;
     int s_a_pairs[2] = {0, 0};
+    int num_visited_states[2] = {0, 0};
     bool write_flag = false;
     double Q;
     double eps;
@@ -163,8 +164,16 @@ int main(int argc, char *argv[])
     {
         s_a_pairs[0] = s_a_pairs[0] + visited_states[0][i].size();
         s_a_pairs[1] = s_a_pairs[1] + visited_states[1][i].size();
+        if(i > 0)
+        {
+            visited_states[0][0].insert(visited_states[0][i].begin(), visited_states[0][i].end());
+            visited_states[1][0].insert(visited_states[1][i].begin(), visited_states[1][i].end());
+        }
     }
-     
+    
+    num_visited_states[0] = visited_states[0][0].size();
+    num_visited_states[1] = visited_states[1][0].size();
+    
     cout << "-----------------------------------------------" << endl << endl;
     cout << "Win-rate Player 1: " << win_rate[0] << endl;
     cout << "Win-rate Player 2: " << win_rate[1] << endl;
@@ -173,11 +182,13 @@ int main(int argc, char *argv[])
     cout << "Player 1:" << endl;
     cout << "\talpha = " << avf[0]->alpha << "\t(learning rate)" << endl;
     cout << "\tgamma = " << avf[0]->gamma << "\t(discount factor)" << endl << endl;
+    cout << "\t" << num_visited_states[0] << " visited states" << endl;
     cout << "\t" << s_a_pairs[0] << " visited state-action pairs" << endl;
     cout << "\t" << avf[0]->get_num_nz() << " non-zero elements in Q-function." << endl << endl;
     cout << "Player 2:" << endl;
     cout << "\talpha = " << avf[1]->alpha << "\t(learning rate)" << endl;
     cout << "\tgamma = " << avf[1]->gamma << "\t(discount factor)" << endl << endl;
+    cout << "\t" << num_visited_states[1] << " visited states" << endl;
     cout << "\t" << s_a_pairs[1] << " visited state-action pairs" << endl;
     cout << "\t" << avf[1]->get_num_nz() << " non-zero elements in Q-function." << endl << endl;
     
