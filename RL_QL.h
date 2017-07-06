@@ -49,6 +49,7 @@ class ActionValueFunction
         double *get_values_for_state(int);
         int get_num_actions();
         int get_num_states();
+        int get_num_nz();
 };
 
 

@@ -99,6 +99,11 @@ int ActionValueFunction::get_num_states()
 }
 
 
+int ActionValueFunction::get_num_nz()
+{
+    return(action_value_f->nz);
+}
+
 Policy::Policy()
 {
     eps = 0.0;

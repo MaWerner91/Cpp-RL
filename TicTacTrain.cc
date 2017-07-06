@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     int old_state[2];
     int max_epoches;
     int max_moves = 9;
+    int s_a_pairs[2] = {0, 0};
     bool write_flag = false;
     double Q;
     double eps;
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
     double gamma2;
     double draw_rate = 0.0;
     double win_rate[2] = {0, 0};
-    set<int> visited_states[2];            // set to keep track which states have been visited
+    set<int> visited_states[2][9];            // set to keep track which state-action pairs have been visited
     string outfilename;
     ActionValueFunction *avf[2];
     
@@ -90,13 +91,15 @@ int main(int argc, char *argv[])
         
         for(int move_count = 0; move_count < max_moves; move_count++)
         {
-            // check if state has been visited before
+            // set player's turn
             token = (epoche_count + move_count) % 2;
-            visited_states[token].insert(state->map_to_int());
             
             // 1. get action according to policy and apply it
             a = pi.get_action(state, avf[token]);
             old_state[token] = state->map_to_int();
+            
+            //add state-action pair to set and apply action
+            visited_states[token][a].insert(state->map_to_int());
             state->apply_action(a, token+1);
             
             if(move_count > 0)
@@ -155,6 +158,13 @@ int main(int argc, char *argv[])
         delete state;
     }
     
+    // compute total number of visited state-action pairs
+    for(int i = 0; i < 9; i++)
+    {
+        s_a_pairs[0] = s_a_pairs[0] + visited_states[0][i].size();
+        s_a_pairs[1] = s_a_pairs[1] + visited_states[1][i].size();
+    }
+     
     cout << "-----------------------------------------------" << endl << endl;
     cout << "Win-rate Player 1: " << win_rate[0] << endl;
     cout << "Win-rate Player 2: " << win_rate[1] << endl;
@@ -162,12 +172,15 @@ int main(int argc, char *argv[])
     cout << "Training epoches played: " << max_epoches << endl << endl;
     cout << "Player 1:" << endl;
     cout << "\talpha = " << avf[0]->alpha << "\t(learning rate)" << endl;
-    cout << "\tgamma = " << avf[0]->gamma << "\t(discount factor)" << endl << endl;;
+    cout << "\tgamma = " << avf[0]->gamma << "\t(discount factor)" << endl << endl;
+    cout << "\t" << s_a_pairs[0] << " visited state-action pairs" << endl;
+    cout << "\t" << avf[0]->get_num_nz() << " non-zero elements in Q-function." << endl << endl;
     cout << "Player 2:" << endl;
     cout << "\talpha = " << avf[1]->alpha << "\t(learning rate)" << endl;
     cout << "\tgamma = " << avf[1]->gamma << "\t(discount factor)" << endl << endl;
-    cout << "Player 1 has visited " << visited_states[0].size() << " states." << endl;
-    cout << "Player 2 has visited " << visited_states[1].size() << " states." << endl << endl;
+    cout << "\t" << s_a_pairs[1] << " visited state-action pairs" << endl;
+    cout << "\t" << avf[1]->get_num_nz() << " non-zero elements in Q-function." << endl << endl;
+    
     cout << "Used " << eps << "-greedy Policy" << endl << endl;
     cout << "-----------------------------------------------" << endl << endl;
     
