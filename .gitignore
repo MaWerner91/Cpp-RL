@@ -4,6 +4,9 @@
 # Makefiles
 makefile
 
+# Exported ActionValueFunctions
+.avf
+
 # Compiled Object files
 *.slo
 *.lo
