@@ -7,6 +7,7 @@
 using namespace std;
 
 // TODO: write names of variables in header files
+// TODO: change update of Q in case of reward
 
 int main(int argc, char *argv[])
 {
