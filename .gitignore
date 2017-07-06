@@ -4,8 +4,8 @@
 # Makefiles
 makefile
 
-# Exported ActionValueFunctions
-.avf
+# Exported Q-Functions
+.q
 
 # Compiled Object files
 *.slo
