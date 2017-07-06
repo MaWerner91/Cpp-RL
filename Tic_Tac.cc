@@ -1,5 +1,4 @@
 #include "Tic_Tac.h"
-#include <set>
 
 TicTacState::TicTacState(int dims, int st_per_dim) : StateVector(dims, st_per_dim)
 {
