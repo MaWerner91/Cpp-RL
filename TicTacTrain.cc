@@ -127,10 +127,14 @@ int main(int argc, char *argv[])
             }
             else if(reward == 1)
             {
-                avf[token]->set_value(state->map_to_int(), a, 1.0);
+                Q = avf[token]->get_value(old_state[token], old_a[token]);
+                Q = Q + avf[token]->alpha*(reward -Q);
+                avf[token]->set_value(old_state[token], old_a[token], Q);
                 
                 other_token = (token+1) % 2;
-                avf[other_token]->set_value(old_state[token], old_a[other_token], 1.0);
+                Q = avf[other_token]->get_value(old_state[other_token], old_a[other_token]);
+                Q = Q + avf[other_token]->alpha*(reward -Q);
+                avf[other_token]->set_value(old_state[other_token], old_a[other_token], Q);
                 
                 draw_rate = draw_rate + 1.0/max_epoches;
                 break;
