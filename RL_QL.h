@@ -19,7 +19,7 @@ class StateVector
         
     public:
     
-        StateVector(int, int);
+        StateVector(int dims, int st_per_dim);
         ~StateVector();
         int map_to_int();
         virtual bool *get_possible_actions();
@@ -40,13 +40,13 @@ class ActionValueFunction
     
         double alpha;
         double gamma;
-        ActionValueFunction(int, int, double, double);
+        ActionValueFunction(int max_num_states, int max_num_actions, double alph, double gam);
         ~ActionValueFunction();
-        void set_value(int, int, double);
-        void write(string);
-        void read(string);
-        double get_value(int, int);
-        double *get_values_for_state(int);
+        void set_value(int state, int action, double value);
+        void write(string outfilename);
+        void read(string infilename);
+        double get_value(int state, int action);
+        double *get_values_for_state(int state);
         int get_num_actions();
         int get_num_states();
         int get_num_nz();
@@ -63,9 +63,9 @@ class Policy
     public:
     
         Policy();
-        Policy(double);
+        Policy(double epsilon);
         ~Policy();
-        int get_action(StateVector *, ActionValueFunction *);
-        int get_max_action(StateVector *, ActionValueFunction *);
+        int get_action(StateVector *statevec, ActionValueFunction *avf);
+        int get_max_action(StateVector *statevec, ActionValueFunction *avf);
 };
 #endif
