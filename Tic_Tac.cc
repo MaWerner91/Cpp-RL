@@ -7,6 +7,7 @@ TicTacState::TicTacState(int dims, int st_per_dim) : StateVector(dims, st_per_di
         vector[i] = 0;
 }
 
+
 bool *TicTacState::get_possible_actions()
 {
     bool *possible_actions = new bool[num_dimensions];
@@ -22,10 +23,12 @@ bool *TicTacState::get_possible_actions()
     return(possible_actions);
 }
 
+
 void TicTacState::apply_action(int action, int token)
 {
     vector[action] = token;
 }
+
 
 void TicTacState::print_state()
 {
@@ -38,6 +41,7 @@ void TicTacState::print_state()
         std::cout << std::endl;
     } 
 }
+
 
 int TicTacState::reward()
 {
