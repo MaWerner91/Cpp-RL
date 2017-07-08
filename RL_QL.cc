@@ -32,6 +32,7 @@ bool *StateVector::get_possible_actions(){}
 void StateVector::apply_action(){}
 int StateVector::reward(){}
 
+
 ActionValueFunction::ActionValueFunction(int max_num_states, int max_num_actions, double alph, double gam)
 {
     num_actions = max_num_actions;
@@ -103,6 +104,7 @@ int ActionValueFunction::get_num_nz()
 {
     return(action_value_f->nz);
 }
+
 
 Policy::Policy()
 {
@@ -177,6 +179,7 @@ int Policy::get_action(StateVector *statevec, ActionValueFunction *avf)
     
     return(return_action);
 }
+
 
 int Policy::get_max_action(StateVector *statevec, ActionValueFunction *avf)
 {
