@@ -7,7 +7,7 @@
 using namespace std;
 
 // TODO: write names of variables in header files
-// TODO: change update of Q in case of reward
+// TODO: change update of Q in case of reward?
 
 int main(int argc, char *argv[])
 {
@@ -16,17 +16,17 @@ int main(int argc, char *argv[])
     int token;
     int other_token;
     int old_state[2];
-    int max_epoches;
+    int max_epoches;            // number of rounds to play
     int max_moves = 9;
     int s_a_pairs[2] = {0, 0};
     int num_visited_states[2] = {0, 0};
     bool write_flag = false;
     double Q;
     double eps;
-    double alpha1;
-    double alpha2;
-    double gamma1;
-    double gamma2;
+    double alpha1;              // learning rate for agent 1
+    double alpha2;              // learning rate for agent 2
+    double gamma1;              // discount factor for agent 1
+    double gamma2;              // discount factor for agent 2
     double draw_rate = 0.0;
     double win_rate[2] = {0, 0};
     set<int> visited_states[2][9];            // set to keep track which state-action pairs have been visited
@@ -123,9 +123,6 @@ int main(int argc, char *argv[])
                 Q = avf[token]->get_value(old_state[token], old_a[token]);
                 Q = Q + avf[token]->alpha*(reward - Q);
                 avf[token]->set_value(old_state[token], old_a[token], Q);
-                
-                //other_token = (token+1) % 2;
-                //avf[other_token]->set_value(old_state[other_token], old_a[other_token], -1.0);
                 
                 win_rate[token] = win_rate[token] + 1.0/max_epoches;                
                 break;
