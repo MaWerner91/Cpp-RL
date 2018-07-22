@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <set>
+#include "Tic_Tac.h"
 #include "RL_QL.h"
+
+using namespace std;
 
 class TicTacState : public StateVector
 {

@@ -5,6 +5,7 @@
 #include <gsl/gsl_rng.h>
 #include <math.h>
 #include <iostream>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -31,7 +32,7 @@ using namespace std;
             
         get_possible_actions() :
             virtual method - needs to be adapted for the specific problem.
-            Should return an array of possible moves in the current state.
+            Should return a vector<bool> of possible moves in the current state.
             
         apply_action() :
             virtual method - needs to be adapted for the specific problem.
@@ -41,22 +42,25 @@ using namespace std;
             virtual method - needs to be adapted for the specific problem.
             Should return the reward in the given state.
 **/
+
+template <typename StateType, typename RewardType>
 class StateVector
 {
-    protected:
+
+public:
     
-        int num_dimensions;
-        int num_states_per_dim; // TODO: make this variable for each dimension separately
-        int *vector;            // vector representing the state TODO: make this a template
+    StateVector(int dims, int st_per_dim);
+    ~StateVector();
+    int map_to_int();
+    virtual vector<bool> get_possible_actions();
+    virtual void apply_action();
+    virtual RewardType reward();
+
+protected:
+
+    vector<int> dimensions;         // length is the number of dimensions, the entries are the number of states per dimension
+    vector<StateType> state;        // vector representing the state TODO: make this a template
         
-    public:
-    
-        StateVector(int dims, int st_per_dim);
-        ~StateVector();
-        int map_to_int();
-        virtual bool *get_possible_actions();
-        virtual void apply_action();
-        virtual int reward();
 };
 
 
@@ -153,28 +157,32 @@ class StateVector
             Returns:
                 num_nz: (int) number of non-zero entries   
 **/
+
+template <typename StateType>
 class ActionValueFunction
 {
-    private:
+
+public:
     
-        int num_actions;
-        int num_states;
-        gsl_spmatrix *action_value_f;
-        
-    public:
+    ActionValueFunction(int max_num_states, int max_num_actions, double alph, double gam);
+    ~ActionValueFunction();
+    void set_value(int state, int action, double value);
+    void write(string outfilename);
+    void read(string infilename);
+    double get_value(int state, int action);
+    double *get_values_for_state(int state);
+    int get_num_actions();
+    int get_num_states();
+    int get_num_nz();
+
+private:
     
-        double alpha;
-        double gamma;
-        ActionValueFunction(int max_num_states, int max_num_actions, double alph, double gam);
-        ~ActionValueFunction();
-        void set_value(int state, int action, double value);
-        void write(string outfilename);
-        void read(string infilename);
-        double get_value(int state, int action);
-        double *get_values_for_state(int state);
-        int get_num_actions();
-        int get_num_states();
-        int get_num_nz();
+    int num_actions;
+    int num_states;
+    gsl_spmatrix *action_value_f;
+    double alpha;
+    double gamma;
+
 };
 
 
