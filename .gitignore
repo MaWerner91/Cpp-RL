@@ -36,3 +36,10 @@ makefile
 *.exe
 *.out
 *.app
+
+# Compressed files
+*.zip
+*.tar.gz
+
+# Files with pre-trained Q-functions
+*.q
